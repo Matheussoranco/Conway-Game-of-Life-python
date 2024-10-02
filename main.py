@@ -21,7 +21,7 @@ def print_grid(rows, cols, grid, generation):
 
     output_str = ""
 
-    output_str += "Generation {0} - To exit the program press <Ctrl-C>\n\r".format(generation)
+    output_str += "Geração/Generation {0} - Para sair do programa pressione <Ctrl-c> / To exit the program press <Ctrl-C>\n\r".format(generation)
     for row in range(rows):
         for col in range(cols):
             if grid[row][col] == 0:
@@ -61,4 +61,51 @@ def grid_changing(rows, cols, grid, next_grid):
             if not grid[row][col] == next_grid[row][col]:
                 return True
     return False
+
+def get_integer_value(prompt, low, high):
+
+    while True:
+        try:
+            value = int(input(prompt))
+        except ValueError:
+            print("Imput não é um valor integral válido / Input was not a valid integer value.")
+            continue
+        if value < low or value > high:
+            print("Imput não está dentro dos limites valor <= {0} ou valor >= {1}/ Input was not inside the bounds (value <= {0} or value >= {1}).".format(low, high))
+        else:
+            break
+    return value
+
+
+def run_game():
+
+    clear_console()
+
+    rows = get_integer_value("Insira o número de linhas / Enter the number of rows (10-60): ", 10, 60)
+    clear_console()
+    cols = get_integer_value("Insira o número de colunas / Enter the number of cols (10-118): ", 10, 118)
+
+    generations = 5000
+    resize_console(rows, cols)
+
+    current_generation = create_initial_grid(rows, cols)
+    next_generation = create_initial_grid(rows, cols)
+
+    gen = 1
+    for gen in range(1, generations + 1):
+        if not grid_changing(rows, cols, current_generation, next_generation):
+            break
+        print_grid(rows, cols, current_generation, gen)
+        create_next_grid(rows, cols, current_generation, next_generation)
+        time.sleep(1 / 5.0)
+        current_generation, next_generation = next_generation, current_generation
+
+    print_grid(rows, cols, current_generation, gen)
+    return input("<Enter> para sair ou r para começar de novo / <Enter> to exit or r to run again: ")
+
+
+run = "r"
+while run == "r":
+    out = run_game()
+    run = out
 
