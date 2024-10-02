@@ -54,4 +54,11 @@ def get_live_neighbors(row, col, rows, cols, grid):
                 life_sum += grid[((row + i) % rows)][((col + j) % cols)]
     return life_sum
 
+def grid_changing(rows, cols, grid, next_grid):
+
+    for row in range(rows):
+        for col in range(cols):
+            if not grid[row][col] == next_grid[row][col]:
+                return True
+    return False
 
