@@ -30,4 +30,28 @@ def print_grid(rows, cols, grid, generation):
                 output_str += "@ "
         output_str += "\n\r"
     print(output_str, end=" ")
+    
+def create_next_grid(rows, cols, grid, next_grid):
+
+
+    for row in range(rows):
+        for col in range(cols):
+            live_neighbors = get_live_neighbors(row, col, rows, cols, grid)
+
+            if live_neighbors < 2 or live_neighbors > 3:
+                next_grid[row][col] = 0
+            elif live_neighbors == 3 and grid[row][col] == 0:
+                next_grid[row][col] = 1
+            else:
+                next_grid[row][col] = grid[row][col]
+                
+def get_live_neighbors(row, col, rows, cols, grid):
+
+    life_sum = 0
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            if not (i == 0 and j == 0):
+                life_sum += grid[((row + i) % rows)][((col + j) % cols)]
+    return life_sum
+
 
